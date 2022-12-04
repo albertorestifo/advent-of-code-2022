@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestFindSharedItem(t *testing.T) {
 	testCases := []struct {
@@ -49,6 +52,29 @@ func TestScore(t *testing.T) {
 			score := Score(tt.char)
 			if score != tt.score {
 				t.Fatalf("Score(%q) = %d, want %d", tt.char, score, tt.score)
+			}
+		})
+	}
+}
+
+func TestFindOverlap(t *testing.T) {
+	tets := []struct {
+		lines   []string
+		overlap string
+	}{
+		{[]string{"vJrwpWtwJgWrhcsFMMfFFhFp", "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL", "PmmdzqPrVvPwwTWBwg"}, "r"},
+		{[]string{"wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn", "ttgJtRGJQctTZtZT", "CrZsJsPPZsGzwwsLwLmpwMDw"}, "Z"},
+	}
+
+	for i, tt := range tets {
+		t.Run(fmt.Sprintf("case %d", i), func(t *testing.T) {
+			overlap, err := FindOverlap(tt.lines)
+			if err != nil {
+				t.Fatalf("FindOverlap(%q) returned an error: %v", tt.lines, err)
+			}
+
+			if overlap != tt.overlap {
+				t.Fatalf("FindOverlap(%q) = %q, want %q", tt.lines, overlap, tt.overlap)
 			}
 		})
 	}

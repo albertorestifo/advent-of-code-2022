@@ -37,3 +37,28 @@ func Score(char string) int {
 
 	return ascii - 38
 }
+
+// Find the character common among the 3 passed lines
+func FindOverlap(lines []string) (string, error) {
+	seenLine := make(map[string]int)
+
+	for _, line := range lines {
+		seenChar := make(map[string]bool)
+		for _, char := range strings.Split(line, "") {
+			seenChar[char] = true
+		}
+
+		for char, _ := range seenChar {
+			seenLine[char]++
+		}
+	}
+
+	// Find the only char that was seen exactly len(lines) times
+	for char, seen := range seenLine {
+		if seen == len(lines) {
+			return char, nil
+		}
+	}
+
+	return "", errors.New("no overlap found")
+}
